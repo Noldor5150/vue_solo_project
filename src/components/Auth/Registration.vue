@@ -4,10 +4,10 @@
       <v-col cols="12" sm="8" md="6">
         <v-card class="elevation-12">
           <v-toolbar class="deep-purple accent-3" dark flat>
-            <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar-title>Registration form</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form v-model="valid" ref="form" validation>
+            <v-form v-model="valid" ref="form" lazy-validation>
               <v-text-field
                 label="Email"
                 name="email"

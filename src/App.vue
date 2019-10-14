@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app temporary v-model="drawer" color="primary" dark>
+    <v-navigation-drawer app temporary v-model="drawer">
       <v-list>
         <v-list-item v-for="link of links" :key="link.title" :to="link.url">
           <v-list-item-icon>
@@ -16,16 +16,12 @@
     <v-card>
       <v-toolbar dense dark class="deep-purple accent-3">
         <v-app-bar-nav-icon @click="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
-        <v-toolbar-title>Add Project</v-toolbar-title>
+        <v-toolbar-title>
+          <router-link to="/" tag="span" class="pointer">Project</router-link>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
-          <v-btn
-            class="deep-purple accent-3"
-            text
-            v-for="link of links"
-            :key="link.title"
-            :to="link.url"
-          >
+          <v-btn text v-for="link of links" :key="link.title" :to="link.url">
             <v-icon left>{{link.icon}}</v-icon>
             {{link.title}}
           </v-btn>
@@ -55,6 +51,8 @@ export default {
   }
 };
 </script>
-<style lang="sass">
-
+<style scoped>
+.pointer {
+  cursor: pointer;
+}
 </style>
