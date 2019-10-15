@@ -71,9 +71,11 @@ export default {
         const post = {
           title: this.title,
           description: this.description,
-          promo: this.promo
+          promo: this.promo,
+          imgSrc:
+            "http://thefappeningblog.com/wp-content/uploads/2017/09/Pamela-Anderson-Nude-142-thefappeningblog.com_.jpg"
         };
-        console.log(post);
+        this.$store.dispatch("createPost", post);
       }
     }
   }

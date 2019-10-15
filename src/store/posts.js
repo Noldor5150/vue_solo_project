@@ -27,8 +27,17 @@ export default {
       },
     ],
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    createPost(state, payload) {
+      state.posts.push(payload);
+    },
+  },
+  actions: {
+    createPost({ commit }, payload) {
+      payload.id = '456565465';
+      commit('createPost', payload);
+    },
+  },
   getters: {
     posts(state) {
       return state.posts;
@@ -40,6 +49,11 @@ export default {
     },
     myPosts(state) {
       return state.posts;
+    },
+    postById(state) {
+      return postId => {
+        return state.posts.find(post => post.id === postId);
+      };
     },
   },
 };

@@ -3,14 +3,11 @@
     <v-layout>
       <v-flex xs12>
         <v-card>
-          <v-img
-            src="https://cdn.onebauer.media/one/radio-legacy/47/52bac/862c0/d9b9e/ef85b/e3dcd/ca87a/dimebagvinnie-getty.jpg?quality=80&width=960&ratio=16-9&resizeStyle=aspectfill&format=jpg"
-            height="300"
-          ></v-img>
+          <v-img :src="post.imgSrc" height="300"></v-img>
           <v-card-text>
-            <h1 class="text--primary mb-3">Alio jebat</h1>
+            <h1 class="text--primary mb-3">{{post.title}}</h1>
 
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique explicabo amet, debitis non quos cum ullam voluptates quaerat? Magnam officia vitae repellendus doloribus nam id perferendis modi unde aut voluptatem.</p>
+            <p>{{post.description}}</p>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -25,8 +22,12 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  props: ["id"],
+  computed: {
+    post() {
+      const id = this.id;
+      return this.$store.getters.postById(id);
+    }
   }
 };
 </script>
