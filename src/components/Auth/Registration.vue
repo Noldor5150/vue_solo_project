@@ -38,7 +38,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn dark class="deep-purple accent-3" @click="onSubmit" :disabled="!valid">Login</v-btn>
+            <v-btn dark class="deep-purple accent-3" @click="onSubmit" :disabled="!valid">Register</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -76,6 +76,7 @@ export default {
           email: this.email,
           password: this.password
         };
+        this.$store.dispatch("registerUser", user);
       }
     }
   }
