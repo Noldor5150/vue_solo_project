@@ -38,7 +38,13 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn dark class="deep-purple accent-3" @click="onSubmit" :disabled="!valid">Register</v-btn>
+            <v-btn
+              dark
+              class="deep-purple accent-3"
+              @click="onSubmit"
+              :loading="loading"
+              :disabled="!valid || loading"
+            >Register</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -68,6 +74,11 @@ export default {
         v => v === this.password || "Repeat password coretly , please"
       ]
     };
+  },
+  computes: {
+    loading() {
+      return this.$store.getters.loading;
+    }
   },
   methods: {
     onSubmit() {
