@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import AuthGuard from './auth-guard';
 import Home from '@/components/Home';
 import Login from '@/components/Auth/Login.vue';
 import Registration from '@/components/Auth/Registration.vue';
@@ -29,11 +30,13 @@ export default new Router({
       path: '/list',
       name: 'list',
       component: PostList,
+      beforeEnter: AuthGuard,
     },
     {
       path: '/new',
       name: 'newPost',
       component: NewPost,
+      beforeEnter: AuthGuard,
     },
     {
       path: '/login',
@@ -49,6 +52,7 @@ export default new Router({
       path: '/orders',
       name: 'orders',
       component: Orders,
+      beforeEnter: AuthGuard,
     },
   ],
 });
