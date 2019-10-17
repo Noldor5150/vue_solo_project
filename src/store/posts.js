@@ -13,36 +13,14 @@ class Post {
 
 export default {
   state: {
-    posts: [
-      {
-        title: 'First post',
-        description: 'Hi Guys',
-        promo: false,
-        imgSrc:
-          'https://cdn.onebauer.media/one/radio-legacy/47/52bac/862c0/d9b9e/ef85b/e3dcd/ca87a/dimebagvinnie-getty.jpg?quality=80&width=960&ratio=16-9&resizeStyle=aspectfill&format=jpg',
-        id: '123',
-      },
-      {
-        title: 'Second post',
-        description: 'Hi Guys2',
-        promo: true,
-        imgSrc:
-          'http://www.mixdownmag.com.au/sites/default/files/styles/flexslider_h400/public/images/dimebag.jpg?itok=_osaAvue',
-        id: '1234',
-      },
-      {
-        title: 'Third post',
-        description: 'Hi Guys3',
-        promo: true,
-        imgSrc:
-          'https://www.billboard.com/files/styles/landscape_768/public/media/dimebag-darrell-pantera-billboard-650.jpg',
-        id: '1235',
-      },
-    ],
+    posts: [],
   },
   mutations: {
     createPost(state, payload) {
       state.posts.push(payload);
+    },
+    loadPosts(state, payload) {
+      state.posts = payload;
     },
   },
   actions: {
@@ -70,7 +48,32 @@ export default {
       } catch (error) {
         commit('setError', error.message);
         commit('setLoading', false);
+        throw error;
+      }
+    },
+    async fetchPosts({ commit }) {
+      commit('clearError');
+      commit('setLoading', true);
 
+      const postsArray = [];
+      try {
+        const fbPostsValue = await firebase
+          .database()
+          .ref('posts')
+          .once('value');
+        const posts = fbPostsValue.val();
+
+        Object.keys(posts).forEach(key => {
+          const post = posts[key];
+          postsArray.push(
+            new Post(post.title, post.description, post.ownersId, post.imgSrc, post.promo, key),
+          );
+        });
+        commit('loadPosts', postsArray);
+        commit('setLoading', false);
+      } catch (error) {
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },

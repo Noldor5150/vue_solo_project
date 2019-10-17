@@ -28,5 +28,6 @@ new Vue({
         this.$store.dispatch('userAutoLogin', user);
       }
     });
+    this.$store.dispatch('fetchPosts');
   },
 }).$mount('#app');
