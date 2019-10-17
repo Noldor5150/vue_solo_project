@@ -44,7 +44,12 @@
           <v-layout>
             <v-flex xs12>
               <v-spacer></v-spacer>
-              <v-btn class="success" :disabled="!valid" @click="addPost">Add post</v-btn>
+              <v-btn
+                class="success"
+                :loading="loading"
+                :disabled="!valid ||loading"
+                @click="addPost"
+              >Add post</v-btn>
             </v-flex>
           </v-layout>
         </v-form>
@@ -61,9 +66,14 @@ export default {
       description: "",
       promo: false,
       valid: false,
-      titleRules: [v => !!v || "Description is required"],
+      titleRules: [v => !!v || "Title is required"],
       descriptionRules: [v => !!v || "Description is required"]
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.loading;
+    }
   },
   methods: {
     addPost() {
@@ -73,9 +83,14 @@ export default {
           description: this.description,
           promo: this.promo,
           imgSrc:
-            "http://thefappeningblog.com/wp-content/uploads/2017/09/Pamela-Anderson-Nude-142-thefappeningblog.com_.jpg"
+            "https://www.deanguitars.com/images/productimages/dfhcfhnc/dfhcfhnc.png"
         };
-        this.$store.dispatch("createPost", post);
+        this.$store
+          .dispatch("createPost", post)
+          .then(() => {
+            this.$router.push("/list");
+          })
+          .catch(() => {});
       }
     }
   }
