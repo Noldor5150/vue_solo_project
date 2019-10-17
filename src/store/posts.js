@@ -27,24 +27,44 @@ export default {
     async createPost({ commit, getters }, payload) {
       commit('clearError');
       commit('setLoading', true);
-
+      const image = payload.image;
       try {
         const newPost = new Post(
           payload.title,
           payload.description,
           getters.user.id,
-          payload.imgSrc,
+          '',
           payload.promo,
         );
         const post = await firebase
           .database()
           .ref('posts')
           .push(newPost);
+
+        const imageExt = image.name.slice(image.name.lastIndexOf('.'));
+        const fileData = await firebase
+          .storage()
+          .ref(`posts/${post.key}.${imageExt}`)
+          .put(image);
+
+        const imgSrc = await fileData.ref.getDownloadURL();
+
+        // eslint-disable-next-line
+        console.log(imgSrc);
+        await firebase
+          .database()
+          .ref('posts')
+          .child(post.key)
+          .update({ imgSrc });
+
         commit('setLoading', false);
         commit('createPost', {
           ...newPost,
           id: post.key,
+          imgSrc,
         });
+        // eslint-disable-next-line
+        console.log(imgSrc);
       } catch (error) {
         commit('setError', error.message);
         commit('setLoading', false);

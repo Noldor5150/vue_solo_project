@@ -22,23 +22,27 @@
           ></v-text-field>
           <v-layout class="mb-3">
             <v-flex xs12>
-              <v-btn class="warning">
+              <v-btn class="warning" @click="triggerUpload">
                 Upload
                 <v-icon right dark>mdi-cloud-upload</v-icon>
               </v-btn>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex xs12>
-              <v-img
-                src="https://www.billboard.com/files/styles/landscape_768/public/media/dimebag-darrell-pantera-billboard-650.jpg"
-                height="180"
+              <input
+                ref="fileInput"
+                type="file"
+                style="display: none;"
+                accept="image/*"
+                @change="onFileChange"
               />
             </v-flex>
           </v-layout>
           <v-layout>
             <v-flex xs12>
-              <v-switch v-model="promo" label="Add to post" color="primary"></v-switch>
+              <v-img v-if="imgSrc" :src="imgSrc" height="180" />
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs12>
+              <v-switch v-model="promo" label="Add to Promotion" color="primary"></v-switch>
             </v-flex>
           </v-layout>
           <v-layout>
@@ -47,9 +51,9 @@
               <v-btn
                 class="success"
                 :loading="loading"
-                :disabled="!valid ||loading"
+                :disabled="!valid || !image ||loading"
                 @click="addPost"
-              >Add post</v-btn>
+              >Create post</v-btn>
             </v-flex>
           </v-layout>
         </v-form>
@@ -66,6 +70,8 @@ export default {
       description: "",
       promo: false,
       valid: false,
+      image: null,
+      imgSrc: "",
       titleRules: [v => !!v || "Title is required"],
       descriptionRules: [v => !!v || "Description is required"]
     };
@@ -77,13 +83,12 @@ export default {
   },
   methods: {
     addPost() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.image) {
         const post = {
           title: this.title,
           description: this.description,
           promo: this.promo,
-          imgSrc:
-            "https://www.deanguitars.com/images/productimages/dfhcfhnc/dfhcfhnc.png"
+          image: this.image
         };
         this.$store
           .dispatch("createPost", post)
@@ -92,6 +97,19 @@ export default {
           })
           .catch(() => {});
       }
+    },
+    triggerUpload() {
+      this.$refs.fileInput.click();
+    },
+    onFileChange(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = e => {
+        this.imgSrc = reader.result;
+      };
+      reader.readAsDataURL(file);
+      this.image = file;
     }
   }
 };
