@@ -38,7 +38,7 @@
   </div>
   <div v-else>
     <v-layout>
-      <v-flex xs12 class="text-xs-center pt-5">
+      <v-flex xs12 class="text" justify="center">
         <v-progress-circular :size="250" :width="7" color="purple" indeterminate></v-progress-circular>
       </v-flex>
     </v-layout>

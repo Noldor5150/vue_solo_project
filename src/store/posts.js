@@ -49,8 +49,6 @@ export default {
 
         const imgSrc = await fileData.ref.getDownloadURL();
 
-        // eslint-disable-next-line
-        console.log(imgSrc);
         await firebase
           .database()
           .ref('posts')
@@ -63,8 +61,6 @@ export default {
           id: post.key,
           imgSrc,
         });
-        // eslint-disable-next-line
-        console.log(imgSrc);
       } catch (error) {
         commit('setError', error.message);
         commit('setLoading', false);
