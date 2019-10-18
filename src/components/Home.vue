@@ -29,7 +29,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn text :to="'/post/' + post.id">Open</v-btn>
-              <v-btn raised color="purple" text>Apply</v-btn>
+              <app-buy-modal :post="post"></app-buy-modal>
             </v-card-actions>
           </v-card>
         </v-flex>

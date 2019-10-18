@@ -62,7 +62,7 @@ export default {
     },
     onSave() {
       if (this.editedDescription !== "" && this.editedTitle !== "") {
-        this.$store.dispatch("updatePost", {
+        this.$store.dispatch('updatePost', {
           title: this.editedTitle,
           description: this.editedDescription,
           id: this.post.id

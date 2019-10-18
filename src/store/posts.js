@@ -22,6 +22,13 @@ export default {
     loadPosts(state, payload) {
       state.posts = payload;
     },
+    updatePost(state, { title, description, id }) {
+      const post = state.posts.find(p => {
+        return p.id === id;
+      });
+      post.title = title;
+      post.description = description;
+    },
   },
   actions: {
     async createPost({ commit, getters }, payload) {
@@ -93,6 +100,26 @@ export default {
         throw error;
       }
     },
+    async updatePost({ commit }, { title, description, id }) {
+      commit('clearError');
+      commit('setLoading', true);
+      try {
+        await firebase
+          .database()
+          .ref('posts')
+          .child(id)
+          .update({
+            title,
+            description,
+          });
+        commit('updatePost', { title, description, id });
+        commit('setLoading', false);
+      } catch (error) {
+        commit('setError', error.message);
+        commit('setLoading', false);
+        throw error;
+      }
+    },
   },
   getters: {
     posts(state) {
@@ -103,8 +130,10 @@ export default {
         return post.promo;
       });
     },
-    myPosts(state) {
-      return state.posts;
+    myPosts(state, getters) {
+      return state.posts.filter(post => {
+        return post.ownersId === getters.user.id;
+      });
     },
     postById(state) {
       return postId => {

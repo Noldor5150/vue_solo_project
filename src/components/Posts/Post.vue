@@ -11,8 +11,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <appEditPostModal :post="post"></appEditPostModal>
-            <v-btn class="success">Aply</v-btn>
+            <appEditPostModal :post="post" v-if="isOwner"></appEditPostModal>
+            <app-buy-modal :post="post"></app-buy-modal>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -32,6 +32,9 @@ export default {
     },
     loading() {
       return this.$store.getters.loading;
+    },
+    isOwner() {
+      return this.post.ownersId === this.$store.getters.user.id;
     }
   },
   components: {
