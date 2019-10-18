@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-layout row>
+    <v-layout row v-if="loading">loading...</v-layout>
+    <v-layout row v-else-if="!loading && orders.length!==0">
       <v-flex xs12 sm6 offset-sm3>
         <h1 class="text--secondary mb-3">Orders</h1>
         <v-list flat subheader three-line>
@@ -20,7 +21,7 @@
                   <v-list-item-subtitle>{{order.phone}}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-btn :to="'/post/' + order.adId" class="primary mt-3">Open</v-btn>
+                  <v-btn :to="'/post/' + order.postId" class="primary mt-3">Open</v-btn>
                 </v-list-item-action>
               </template>
             </v-list-item>
@@ -28,28 +29,32 @@
         </v-list>
       </v-flex>
     </v-layout>
+    <v-layout row v-else>You have no orders</v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      orders: [
-        {
-          id: "fds3",
-          name: "Paulazas",
-          phone: "8-921-121-12-12",
-          adId: "123",
-          done: false
-        }
-      ]
-    };
+  computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
+    orders() {
+      return this.$store.getters.orders;
+    }
   },
   methods: {
     markDone(order) {
-      order.done = true;
+      this.$store
+        .dispatch("markOrderDone", order.id)
+        .then(() => {
+          order.done = true;
+        })
+        .catch(() => {});
     }
+  },
+  created() {
+    this.$store.dispatch("fetchOrders");
   }
 };
 </script>
