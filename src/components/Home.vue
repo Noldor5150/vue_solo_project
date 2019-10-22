@@ -37,12 +37,13 @@
     </v-container>
   </div>
   <div v-else>
-    <v-layout>
-      <v-flex xs12 class="text" justify="center">
-        <v-progress-circular :size="250" :width="7" color="purple" indeterminate></v-progress-circular>
-      </v-flex>
-    </v-layout>
+    <v-card class="mx-auto mt-12" width="0px">
+      <v-card-text>
+        <v-progress-circular indeterminate :size="150" :width="5" color="purple"></v-progress-circular>
+      </v-card-text>
+    </v-card>
   </div>
+  <!-- // xs12 class="text" justify="center" -->
 </template>
 
 <script>

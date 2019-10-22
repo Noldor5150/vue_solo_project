@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <v-layout row v-if="loading">loading...</v-layout>
+    <v-layout v-if="loading">
+      <v-card class="mx-auto mt-12" width="0px">
+        <v-card-text>
+          <v-progress-circular indeterminate :size="150" :width="5" color="purple"></v-progress-circular>
+        </v-card-text>
+      </v-card>
+    </v-layout>
     <v-layout row v-else-if="!loading && orders.length!==0">
       <v-flex xs12 sm6 offset-sm3>
         <h1 class="text--secondary mb-3">Orders</h1>

@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex xs12 v-if="!loading">
+    <v-layout v-if="!loading">
+      <v-flex xs12>
         <v-card>
           <v-img :src="post.imgSrc" height="300"></v-img>
           <v-card-text>
@@ -16,8 +16,14 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <div v-else>Loading</div>
     </v-layout>
+    <div v-else>
+      <v-card class="mx-auto mt-12" width="0px">
+        <v-card-text>
+          <v-progress-circular indeterminate :size="150" :width="5" color="purple"></v-progress-circular>
+        </v-card-text>
+      </v-card>
+    </div>
   </v-container>
 </template>
 
